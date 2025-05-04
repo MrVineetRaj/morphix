@@ -44,8 +44,6 @@ export default function UploadModal({
 
   const router = useRouter();
 
-  const handleTransformationToggle = (value: string) => {};
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUploading(true);
@@ -111,16 +109,7 @@ export default function UploadModal({
               />
             )}
             <div className="flex items-center gap-2">
-              {videoURL && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleDeleteVideo}
-                  className="bg-red-600 hover:bg-red-700"
-                >
-                  Remove Video
-                </Button>
-              )}
+              {videoURL && <p className="">To Remove Video</p>}
               <FileUploaderRegular
                 sourceList="local, camera, facebook, gdrive"
                 accept=".mp4, .mov"
@@ -133,33 +122,40 @@ export default function UploadModal({
 
           {videoURL && (
             <>
-              <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+              <div className="space-y-2 w-full">
+                <Label htmlFor="title" className="w-full">
+                  Title
+                </Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Enter video title"
+                  className="w-full"
                   required
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description (Optional)</Label>
+              <div className="space-y-2 w-full">
+                <Label htmlFor="description" className="w-full">
+                  Description (Optional)
+                </Label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Enter video description"
                   rows={3}
+                  className="w-full"
                 />
               </div>
 
-              <div className="space-y-3">
-                <Label>Transformations</Label>
+              <div className="space-y-3 w-full">
+                <Label className="w-full">Transformations</Label>
                 <Input
                   type="text"
                   value={selectedTransformations}
+                  className="w-full"
                   onChange={(e) => setSelectedTransformations(e.target.value)}
                   placeholder="Enter your prompt"
                 />

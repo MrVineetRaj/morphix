@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { IVideo } from "@/lib/models/video.model";
@@ -11,14 +11,11 @@ import { getAllVideos } from "@/lib/api_calls/video";
 import { toast } from "sonner";
 import Link from "next/link";
 
-
 export default function VideoGallery({ query }: { query?: string }) {
   const [videos, setVideos] = useState<IVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  
-  
 
   const loadVideos = async (reset = false) => {
     console.log("Loading videos with query:", reset, query);
@@ -49,7 +46,6 @@ export default function VideoGallery({ query }: { query?: string }) {
   };
 
   useEffect(() => {
-    console.log("query hereeeee ", query);
     loadVideos(true);
     if (query) {
       setVideos([]);

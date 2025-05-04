@@ -6,6 +6,10 @@ import { fal } from "@fal-ai/client";
 import { VideoStatuses, VideoType } from "../constants";
 import { connectToDatabase } from "../database";
 import UserCredit from "../models/credit.model";
+import {
+  deleteFile,
+  UploadcareSimpleAuthSchema,
+} from "@uploadcare/rest-client";
 
 export const deleteUploadCareFile = async (uuid: string) => {
   try {
@@ -65,6 +69,21 @@ export const startTransformingVideo = async (
     }
     // get the url from cloudinary
     const cloudinaryURL = cloudinaryRes.data.secure_url;
+
+    const uploadcareSimpleAuthSchema = new UploadcareSimpleAuthSchema({
+      publicKey: process.env.UPLOADCARE_PUBLIC_KEY as string,
+      secretKey: process.env.UPLOADCARE_SECRET_KEY as string,
+    });
+
+    let uuid = videoURL.split("/")[videoURL.split("/").length - 2];
+
+    console.log("Deleting file from Uploadcare:", uuid);
+    await deleteFile(
+      {
+        uuid,
+      },
+      { authSchema: uploadcareSimpleAuthSchema }
+    );
 
     await connectToDatabase();
 
