@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
       await connectToDatabase();
       await UserCredit.create({
         clerkUserId: userData.id,
-        credits: 1,
       });
     }
 
