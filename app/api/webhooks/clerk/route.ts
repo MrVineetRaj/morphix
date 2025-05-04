@@ -2,6 +2,7 @@ import { verifyWebhook } from "@clerk/nextjs/webhooks";
 import { NextRequest, NextResponse } from "next/server";
 import { UserJSON } from "@clerk/nextjs/server";
 import UserCredit from "@/lib/models/credit.model";
+import { connectToDatabase } from "@/lib/database";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,6 +18,7 @@ export async function POST(req: NextRequest) {
     if (eventType === "user.created") {
       const userData = evt.data as UserJSON;
 
+      await connectToDatabase();
       await UserCredit.create({
         clerkUserId: userData.id,
         credits: 1,
