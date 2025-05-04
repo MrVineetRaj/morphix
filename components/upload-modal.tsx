@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-
 import "@uploadcare/react-uploader/core.css";
 
 import {
@@ -126,7 +125,7 @@ export default function UploadModal({
                 sourceList="local, camera, facebook, gdrive"
                 accept=".mp4, .mov"
                 classNameUploader="uc-dark"
-                pubkey="ab27482ee0f7b405353d"
+                pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY as string}
                 onFileUploadSuccess={handleUploadSuccess}
               />
             </div>

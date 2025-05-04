@@ -32,7 +32,6 @@ export const startTransformingVideo = async (
     fullName: string;
     avatar: string;
   }
-  
 ) => {
   try {
     // upload your file to cloudinary
@@ -87,9 +86,17 @@ export const startTransformingVideo = async (
       };
     }
 
-    // Deduct 1 credit from the user
-    userCredits.credits -= 1;
-    await userCredits.save();
+    const { request_id } = await fal.queue.submit(
+      "fal-ai/hunyuan-video/video-to-video",
+      {
+        input: {
+          prompt: transformationApplied,
+          video_url: cloudinaryURL,
+        },
+
+        webhookUrl: "https://morphix.unknownbug.tech/api/webhook/fal_ai",
+      }
+    );
 
     const video = await Video.create({
       createBy: userId,
@@ -98,7 +105,7 @@ export const startTransformingVideo = async (
       transformedVideoURL: "",
       transformationApplied,
       title,
-      flaAiRequestId: "hhh",
+      flaAiRequestId: request_id,
       description,
     });
 
