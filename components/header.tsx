@@ -1,0 +1,155 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { Clock, Bookmark, Upload, LayoutGrid } from "lucide-react";
+import UploadModal from "./upload-modal";
+// import { useCredits } from "@/hooks/use-credits";
+import { Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+// ... other imports
+
+export default function Header() {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  // const { user } = useUser();
+  const router = useRouter();
+  // const { credits } = useCredits();
+
+  return (
+    <header className="p-2 sticky top-0 z-50 w-full border-b  flex items-center justify-center ">
+      {/* <div className="flex items-center justify-between w-full"> */}
+      <div className="container flex h-16 items-center justify-between ">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="rounded-md bg-blue-600 p-1">
+            <LayoutGrid className="h-6 w-6 text-white" />
+          </div>
+          <span className="text-xl font-bold">Morphix</span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-4">
+          {/* ... existing desktop buttons and credits */}
+          <SignedOut>
+            <div className="cursor-pointer active:scale-95 transition-all">
+              <SignInButton />
+            </div>
+            <div className="bg-primary text-white rounded-md px-4 py-2 cursor-pointer active:scale-95 transition-all">
+              <SignUpButton />
+            </div>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/history">
+              <Button variant="ghost" size="sm" className="flex gap-2">
+                <Clock className="h-4 w-4" />
+                <span>History</span>
+              </Button>
+            </Link>
+
+            <span className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+              {/* {credits} Credits Left */}
+            </span>
+
+            <Button
+              onClick={() => setIsUploadModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+              size="sm"
+            >
+              <Upload className="h-4 w-4" />
+              <span>Upload New Video</span>
+            </Button>
+
+            <UserButton />
+          </SignedIn>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center gap-4 ">
+          <SignedOut>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push("/sign-in")}
+            >
+              Login In
+            </Button>
+            <Button
+              className="text-white"
+              size="sm"
+              onClick={() => router.push("/sign-in")}
+            >
+              Sign Up
+            </Button>
+          </SignedOut>
+          <SignedIn>
+            <span className="text-xs font-medium px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
+              {/* {credits} Credits */}
+            </span>
+
+            <UserButton />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Toggle Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right">
+                <SheetHeader>
+                  <SheetTitle>Menu</SheetTitle>
+                </SheetHeader>
+                <div className="grid gap-4 py-4">
+                  <Link
+                    href="/history"
+                    className="flex items-center gap-2 p-2 hover:bg-accent rounded-md"
+                  >
+                    <Clock className="h-5 w-5" />
+                    <span>History</span>
+                  </Link>
+
+                  <Button
+                    onClick={() => {
+                      setIsUploadModalOpen(true);
+                      // Consider closing the sheet after clicking, might need Sheet's open/onOpenChange prop
+                    }}
+                    className="w-full justify-start bg-blue-600 hover:bg-blue-700 text-white gap-2 p-2"
+                    size="sm"
+                  >
+                    <Upload className="h-5 w-5" />
+                    <span>Upload New Video</span>
+                  </Button>
+                  <div className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-center mt-4">
+                    {/* {credits} Credits Left */}
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </SignedIn>
+        </div>
+      </div>
+
+      {isUploadModalOpen && (
+        <UploadModal
+          isOpen={isUploadModalOpen}
+          onClose={() => setIsUploadModalOpen(false)}
+        />
+      )}
+    </header>
+  );
+}
