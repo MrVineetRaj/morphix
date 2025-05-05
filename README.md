@@ -2,10 +2,21 @@
 
 A platform that enables video editing according to user prompt
 
+## Features
+
+- Transform your videos with single click
+- Download videos transformed by others
+- Download and use them
+- Robust search mechanism
+- Pagination
+- Uploadcare File validation
+- Neat and clean UI/UX
+
 ## Tools
 
 - Clerk - Auth
 - Fal.Ai - Ai transformation
+- Uploadcare - for validating files
 - MongoDB - Database
 - Next JS - Framework
 - Typescript - Main Programming Language
