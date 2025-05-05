@@ -14,6 +14,7 @@ export interface IVideo extends Document {
   flaAiRequestId?: string;
   title: string;
   description?: string;
+  error?: string;
   status: "draft" | "processing" | "completed" | "failed";
   createdAt: Date;
 }
@@ -50,6 +51,10 @@ const VideoSchema: Schema = new Schema(
       required: true,
     },
     description: {
+      type: String,
+      trim: true,
+    },
+    error:{
       type: String,
       trim: true,
     },

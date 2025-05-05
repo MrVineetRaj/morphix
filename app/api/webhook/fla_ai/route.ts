@@ -32,6 +32,18 @@ export async function POST(req: Request) {
     }
 
     if (body && body.status != "OK") {
+      const { requestId, payload } = body;
+      await Video.findOneAndUpdate(
+        { flaAiRequestId: requestId },
+        {
+          error: payload.detail[0].msg,
+          status: VideoStatuses.FAILED,
+        },
+        {
+          new: true,
+        }
+      );
+
       return NextResponse.json(
         { message: body.payload.detail[0].msg },
         {
