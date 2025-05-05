@@ -4,13 +4,13 @@ import Video from "@/lib/models/video.model";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const body = await req.json();
+  console.log("Received webhook:", body);
+
   try {
-    const body = await req.json();
-    console.log("Received webhook:", body);
+    const { requestId, payload } = body;
     let userId = "";
     if (body && body.status === "OK") {
-      const { requestId, payload } = body;
-
       const updatedVideo = await Video.findOneAndUpdate(
         { flaAiRequestId: requestId },
         {
@@ -32,7 +32,6 @@ export async function POST(req: Request) {
     }
 
     if (body && body.status != "OK") {
-      const { requestId, payload } = body;
       await Video.findOneAndUpdate(
         { flaAiRequestId: requestId },
         {

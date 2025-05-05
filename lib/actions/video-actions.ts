@@ -112,8 +112,7 @@ export const startTransformingVideo = async (
           prompt: transformationApplied,
           video_url: cloudinaryURL,
         },
-
-        webhookUrl: "https://morphix.unknownbug.tech/api/webhook/fal_ai",
+        webhookUrl: "https://morphix.unknownbug.tech/api/webhook/fla_ai",
       }
     );
 
