@@ -9,7 +9,6 @@ const MainVideoPage = () => {
 
   useEffect(() => {
     const videoId = params.videoId;
-
     console.log("Video ID from URL:", params);
     if (!videoId) {
       return;
@@ -17,6 +16,7 @@ const MainVideoPage = () => {
     console.log("Video ID:", videoId);
     setVideoId((videoId as string) || "");
   }, [params]);
+  
   return (
     <div className="container mx-auto px-4 py-8">
       <VideoPage videoId={videoId || ""} />

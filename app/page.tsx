@@ -1,9 +1,6 @@
 "use client";
-import { auth } from "@clerk/nextjs/server";
-import { redirect, useSearchParams } from "next/navigation";
-// import VideoGallery from "@/components/video-gallery";
-// import SearchBar from "@/components/search-bar";
-import Header from "@/components/header";
+
+import { useSearchParams } from "next/navigation";
 import VideoGallery from "@/components/video-gallery";
 import SearchBar from "@/components/search-bar";
 import { useEffect, useState } from "react";

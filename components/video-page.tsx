@@ -33,6 +33,7 @@ const VideoPage = ({ videoId }: { videoId: string }) => {
     <div>
       {video ? (
         <>
+          {/* this page is dedicated to video  will display both transformedVideo and sourceVideo */}
           <h1 className="text-2xl text-primary">{video?.title}</h1>
           <p className="text-sm text-gray">{video?.description || ""}</p>
 
@@ -40,10 +41,11 @@ const VideoPage = ({ videoId }: { videoId: string }) => {
             Transformation Applied: {video?.transformationApplied}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="">
               <span className="flex justify-between">
                 <h1 className="text-2xl font-bold mb-4">Original Video</h1>
+                {/* Download button to download videos provided for both of the videos */}
                 <a href={video?.sourceVideoURL}>
                   <Download />
                 </a>
@@ -67,17 +69,16 @@ const VideoPage = ({ videoId }: { videoId: string }) => {
                 )}
               </span>
               {video?.status === VideoStatuses.COMPLETED ? (
-                
-                  <video
-                    className="w-full h-auto rounded-lg shadow-[2px_0_10px] shadow-primary/40 hover:shadow-primary/80  hover:shadow-[2px_0px_20px] transition-all duration-300"
-                    src={video?.transformedVideoURL}
-                    controls
-                    autoPlay
-                    loop
-                    muted
-                  ></video>
-                
+                <video
+                  className="w-full h-auto rounded-lg shadow-[2px_0_10px] shadow-primary/40 hover:shadow-primary/80  hover:shadow-[2px_0px_20px] transition-all duration-300"
+                  src={video?.transformedVideoURL}
+                  controls
+                  autoPlay
+                  loop
+                  muted
+                ></video>
               ) : (
+                // if video is still under process then it will show this skeleton
                 <div className="b p-8  h-full bg-secondary animate-pulse rounded-2xl items-center justify-center min"></div>
               )}
             </div>

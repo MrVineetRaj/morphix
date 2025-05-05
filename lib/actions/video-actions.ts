@@ -38,7 +38,7 @@ export const startTransformingVideo = async (
   }
 ) => {
   try {
-    // upload your file to cloudinary
+    // upload your file to cloudinary using uploadCare URL
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
     const apiKey = process.env.CLOUDINARY_API_KEY;
     const apiSecret = process.env.CLOUDINARY_API_SECRET;
@@ -53,7 +53,6 @@ export const startTransformingVideo = async (
 
     const formData = new URLSearchParams();
     formData.append("file", videoURL);
-
     formData.append("api_key", apiKey as string);
     formData.append("timestamp", `${timestamp}`);
     formData.append("signature", signature);
@@ -67,9 +66,11 @@ export const startTransformingVideo = async (
       console.error("Error uploading video to Cloudinary:", cloudinaryRes);
       throw new Error("Failed to upload video to Cloudinary");
     }
+
     // get the url from cloudinary
     const cloudinaryURL = cloudinaryRes.data.secure_url;
 
+    // preparing to delete the video from uploadcare platform
     const uploadcareSimpleAuthSchema = new UploadcareSimpleAuthSchema({
       publicKey: process.env.UPLOADCARE_PUBLIC_KEY as string,
       secretKey: process.env.UPLOADCARE_SECRET_KEY as string,
@@ -78,6 +79,8 @@ export const startTransformingVideo = async (
     let uuid = videoURL.split("/")[videoURL.split("/").length - 2];
 
     console.log("Deleting file from Uploadcare:", uuid, cloudinaryURL);
+
+    // Deleting the video from uploadcare
     await deleteFile(
       {
         uuid,
@@ -87,6 +90,7 @@ export const startTransformingVideo = async (
 
     await connectToDatabase();
 
+    //deducting user credit
     const userCredits = await UserCredit.findOne({
       clerkUserId: userId,
     });
@@ -108,7 +112,7 @@ export const startTransformingVideo = async (
     userCredits.credits = userCredits.credits - 1;
     await userCredits.save();
 
-
+    // attaching ai transformation to fal ai queue
     const { request_id } = await fal.queue.submit(
       "fal-ai/hunyuan-video/video-to-video",
       {
@@ -120,6 +124,7 @@ export const startTransformingVideo = async (
       }
     );
 
+    // storing the available metadata to db
     const video = await Video.create({
       createBy: userId,
       author,
@@ -131,6 +136,7 @@ export const startTransformingVideo = async (
       description,
     });
 
+    // returning available use credits along with other message and data
     return {
       message: "Video transformation started",
       videoId: video._id,
@@ -138,7 +144,7 @@ export const startTransformingVideo = async (
       credits: userCredits.credits,
     };
   } catch (error) {
-    console.error("Error transforming video:", error);
+    console.log("Error transforming video:", error);
     throw error;
   }
 };
@@ -152,7 +158,7 @@ export const getVideoById = async (videoId: string) => {
     }
     return video;
   } catch (error) {
-    console.error("Error fetching video:", error);
+    console.log("Error fetching video:", error);
     throw error;
   }
 };
@@ -162,6 +168,8 @@ export const getAllVideos = async (query: string = "", page = 1) => {
     const limit = 20;
     await connectToDatabase();
     console.log("Querying videos with query:", query);
+
+    // fetching videos with query , pagination and limit
     const videos = await Video.find({
       videoType: VideoType.PUBLIC,
       status: VideoStatuses.COMPLETED,
@@ -176,6 +184,7 @@ export const getAllVideos = async (query: string = "", page = 1) => {
 
     console.log("Videos found:", videos);
 
+    // to address if db has more videos or not
     const videosCnt = await Video.countDocuments({
       videoType: VideoType.PUBLIC,
       status: VideoStatuses.COMPLETED,
@@ -184,6 +193,7 @@ export const getAllVideos = async (query: string = "", page = 1) => {
         { description: { $regex: query, $options: "i" } },
       ],
     });
+
 
     const hasMore = videosCnt > page * limit;
 
@@ -196,7 +206,6 @@ export const getAllVideos = async (query: string = "", page = 1) => {
 
     return { videos, hasMore };
   } catch (error) {
-    console.error("Error fetching videos:", error);
     throw error;
   }
 };
@@ -214,7 +223,6 @@ export const getVideoHistory = async (userId: string) => {
 
     return videos;
   } catch (error) {
-    console.error("Error fetching videos:", error);
     throw error;
   }
 };

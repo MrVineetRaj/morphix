@@ -4,19 +4,21 @@ import UserCredit from "@/lib/models/credit.model";
 import Video from "@/lib/models/video.model";
 import { NextResponse } from "next/server";
 
+// to handle fal.ai webhook on completing on transformation
 export async function POST(req: Request) {
   const body = await req.json();
   console.log("Received webhook:", body);
 
   try {
-    const { requestId, payload } = body;
+    const { request_id, payload } = body;
     let userId = "";
-    
+
     await connectToDatabase();
 
     if (body && body.status === "OK") {
+      // find related video
       const video = await Video.findOne({
-        flaAiRequestId: requestId,
+        flaAiRequestId: request_id,
       });
       if (!video) {
         return NextResponse.json(
@@ -27,6 +29,7 @@ export async function POST(req: Request) {
         );
       }
 
+      // store it's metadata
       video.transformedVideoURL = payload?.video?.url;
       video.status = VideoStatuses.COMPLETED;
       await video.save();
@@ -36,8 +39,9 @@ export async function POST(req: Request) {
     }
 
     if (body && body.status != "OK") {
+      // if request failed store the error
       const video = await Video.findOne({
-        flaAiRequestId: requestId,
+        flaAiRequestId: request_id,
       });
       if (!video) {
         return NextResponse.json(
@@ -66,6 +70,7 @@ export async function POST(req: Request) {
         );
       }
 
+      // append the user credits
       userCredit.credits = userCredit.credits + 1;
 
       await userCredit.save();

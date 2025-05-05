@@ -3,17 +3,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { IVideo } from "@/lib/models/video.model";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const HistoryPage = () => {
   const { user, isSignedIn } = useUser();
   const [videos, setVideos] = React.useState<IVideo[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const router = useRouter();
-
+  
   useEffect(() => {
     const fetchHistory = async () => {
+      // fetching history of user video
       try {
         setLoading(true);
         if (!isSignedIn) return;
@@ -31,6 +30,7 @@ const HistoryPage = () => {
       }
     };
 
+
     fetchHistory();
   }, [user]);
   return (
@@ -38,6 +38,7 @@ const HistoryPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {loading && videos.length === 0 ? (
           Array.from({ length: 8 }).map((_, i) => (
+            //  rendering skelton of videos when loading them
             <div key={i} className="space-y-3">
               <Skeleton className="h-[200px] w-full rounded-lg" />
               <Skeleton className="h-4 w-3/4" />
@@ -46,6 +47,7 @@ const HistoryPage = () => {
           ))
         ) : videos.length > 0 ? (
           videos.map((video) => (
+            // making it link so that if a user clicks on it he will be redirected to dedicated video page
             <Link
               href={`/video/${video?._id}`}
               key={video._id as string}

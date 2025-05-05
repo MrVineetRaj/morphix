@@ -4,6 +4,8 @@ import { UserJSON } from "@clerk/nextjs/server";
 import UserCredit from "@/lib/models/credit.model";
 import { connectToDatabase } from "@/lib/database";
 
+
+// clerk webhook to make sure when a new user is created a new credit doc is created in my db
 export async function POST(req: NextRequest) {
   try {
     const evt = await verifyWebhook(req);

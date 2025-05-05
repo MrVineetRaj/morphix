@@ -33,27 +33,28 @@ export default function UploadModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const router = useRouter();
+
   const { setCredits } = useManageCredit();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [selectedTransformations, setSelectedTransformations] =
     useState<string>("");
   const [videoURL, setVideoURL] = useState<string>("");
-
-  const [isUploading, setIsUploading] = useState(false);
-
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { user, isSignedIn } = useUser();
-
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUploading(true);
+
+    // checks if user is signed in or not
     if (!isSignedIn) {
       router.push("/sign-in");
       return;
     }
-    console.log(user);
+    
+    // if signed in then call create video
     const res = await createVideo(
       videoURL,
       selectedTransformations,
@@ -74,25 +75,14 @@ export default function UploadModal({
     }
   };
 
+
+  // on success of upload  using upload care record the returned video url
   const handleUploadSuccess = (file: OutputFileEntry) => {
     console.log("File uploaded successfully:", file);
     setVideoURL(file.cdnUrl as string);
   };
 
-  const handleDeleteVideo = async () => {
-    try {
-      const res = await axios.delete("/api/uploadcare", {
-        data: {
-          uuid: videoURL.split("/").pop(),
-        },
-      });
-      if (res.status === 200) {
-        setVideoURL("");
-      }
-    } catch (error) {
-      console.error("Error deleting video:", error);
-    }
-  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">

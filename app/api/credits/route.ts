@@ -2,6 +2,8 @@ import { connectToDatabase } from "@/lib/database";
 import UserCredit from "@/lib/models/credit.model";
 import { NextResponse } from "next/server";
 
+
+// function to get user credits
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");

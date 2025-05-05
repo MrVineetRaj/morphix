@@ -4,6 +4,8 @@ import {
 } from "@/lib/actions/video-actions";
 import { NextResponse } from "next/server";
 
+
+//  api request to start new video transformation 
 export async function POST(req: Request) {
   try {
     const {
@@ -46,19 +48,15 @@ export async function POST(req: Request) {
   }
 }
 
+//  api request to get all videos based on search query and page number
 export async function GET(req: Request) {
   try {
-    // Assuming you have a function to get video details by ID
-    //   read query fro query 
-    
     const url = new URL(req.url);
     const query = url.searchParams.get("query");
     const page = url.searchParams.get("page");
 
-
     console.log("Received query:", query);
     const result = await getAllVideos(query || "", page ? parseInt(page) : 1);
-
 
     return NextResponse.json(
       {

@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   SignedIn,
   SignedOut,
-  SignIn,
   SignInButton,
   SignUpButton,
   UserButton,
@@ -15,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Clock, Bookmark, Upload, LayoutGrid } from "lucide-react";
 import UploadModal from "./upload-modal";
-// import { useCredits } from "@/hooks/use-credits";
+
 import { Menu } from "lucide-react";
 import {
   Sheet,
@@ -27,14 +26,12 @@ import {
 import { useManageCredit } from "@/hooks/manage-credit";
 import { getCredits } from "@/lib/api_calls/credits";
 import { toast } from "sonner";
-// ... other imports
 
 export default function Header() {
   const { credits, setCredits } = useManageCredit();
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const { user, isSignedIn } = useUser();
   const router = useRouter();
-  // const { credits } = useCredits();
 
   useEffect(() => {
     const fetchCredits = async () => {
@@ -54,7 +51,6 @@ export default function Header() {
 
   return (
     <header className="p-2 sticky top-0 z-50 w-full border-b  flex items-center justify-center ">
-      {/* <div className="flex items-center justify-between w-full"> */}
       <div className="container flex h-16 items-center justify-between ">
         <Link href="/" className="flex items-center gap-2">
           <div className="rounded-md bg-blue-600 p-1">
@@ -65,7 +61,6 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
-          {/* ... existing desktop buttons and credits */}
           <SignedOut>
             <div className="cursor-pointer active:scale-95 transition-all">
               <SignInButton />
@@ -104,7 +99,7 @@ export default function Header() {
           </SignedIn>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Nav */}
         <div className="md:hidden flex items-center gap-4 ">
           <SignedOut>
             <Button
@@ -156,7 +151,6 @@ export default function Header() {
                   <Button
                     onClick={() => {
                       setIsUploadModalOpen(true);
-                      // Consider closing the sheet after clicking, might need Sheet's open/onOpenChange prop
                     }}
                     className="w-full justify-start bg-blue-600 hover:bg-blue-700 text-white gap-2 p-2"
                     size="sm"
@@ -164,9 +158,6 @@ export default function Header() {
                     <Upload className="h-5 w-5" />
                     <span>Upload New Video</span>
                   </Button>
-                  <div className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-center mt-4">
-                    {/* {credits} Credits Left */}
-                  </div>
                 </div>
               </SheetContent>
             </Sheet>

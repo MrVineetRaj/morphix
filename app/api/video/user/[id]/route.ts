@@ -1,6 +1,7 @@
 import { getVideoHistory } from "@/lib/actions/video-actions";
 import { NextResponse } from "next/server";
 
+// to fetch user history
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);

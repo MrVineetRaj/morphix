@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 
 export const createVideo = async (
@@ -25,8 +25,12 @@ export const createVideo = async (
     console.log("Video created successfully:", res.data);
     return { success: true, result: res.data };
   } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error?.response?.data?.message || "Error fetching credits");
+      return null;
+    }
     toast.error("Error creating video");
-    console.error("Error creating video:", error);
+    return null;
   }
 };
 
@@ -40,7 +44,10 @@ export const getVideoHistory = async (userId: string) => {
     }
     return res.data;
   } catch (error) {
-    console.error("Error fetching video history:", error);
+    if (error instanceof AxiosError) {
+      toast.error(error?.response?.data?.message || "Error fetching credits");
+      return null;
+    }
     toast.error("Error fetching video history");
     return null;
   }
@@ -56,7 +63,10 @@ export const getVideoById = async (videoId: string) => {
     }
     return res.data;
   } catch (error) {
-    console.error("Error fetching video:", error);
+    if (error instanceof AxiosError) {
+      toast.error(error?.response?.data?.message || "Error fetching credits");
+      return null;
+    }
     toast.error("Error fetching video");
     return null;
   }
@@ -72,7 +82,10 @@ export const getAllVideos = async (query = "", page = 1) => {
     }
     return res.data;
   } catch (error) {
-    console.error("Error fetching all videos:", error);
+    if (error instanceof AxiosError) {
+      toast.error(error?.response?.data?.message || "Error fetching credits");
+      return null;
+    }
     toast.error("Error fetching all videos");
     return null;
   }

@@ -17,6 +17,7 @@ export default function SearchBar({ initialQuery = "" }: { initialQuery?: string
     setQuery(searchParams.get("query") || "")
   }, [searchParams])
 
+  // function to handle search query 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
 

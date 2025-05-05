@@ -46,6 +46,7 @@ export default function VideoGallery({ query }: { query?: string }) {
   };
 
   useEffect(() => {
+    // it will reset the videos array every time a new query is assigned
     loadVideos(true);
     if (query) {
       setVideos([]);
@@ -56,6 +57,7 @@ export default function VideoGallery({ query }: { query?: string }) {
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {loading && videos.length === 0 ? (
+          //  here rendering the skeleton
           Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="space-y-3">
               <Skeleton className="h-[200px] w-full rounded-lg" />
@@ -70,6 +72,8 @@ export default function VideoGallery({ query }: { query?: string }) {
               key={video._id as string}
               className="space-y-3 border p-2 rounded-lg shadow-[2px_0_10px] shadow-primary/20 hover:shadow-primary/40 transition-all duration-200 ease-in-out"
             >
+              {/* if video is transformed then transformed video will be rendered  */}
+              {/* else then source video will be rendered  */}
               <video
                 src={video?.transformedVideoURL || video?.sourceVideoURL}
                 className="h-[200px] w-full rounded-lg object-cover"
@@ -95,6 +99,7 @@ export default function VideoGallery({ query }: { query?: string }) {
         )}
       </div>
 
+      {/*  there will be a button to load more videos if existed  */}
       {hasMore && videos.length > 0 && (
         <div className="flex justify-center pt-4">
           <Button
