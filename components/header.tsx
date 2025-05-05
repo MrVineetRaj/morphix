@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -24,13 +24,33 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useManageCredit } from "@/hooks/manage-credit";
+import { getCredits } from "@/lib/api_calls/credits";
+import { toast } from "sonner";
 // ... other imports
 
 export default function Header() {
+  const { credits, setCredits } = useManageCredit();
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  // const { user } = useUser();
+  const { user, isSignedIn } = useUser();
   const router = useRouter();
   // const { credits } = useCredits();
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        if (!isSignedIn) return;
+        const response = await getCredits(user.id);
+        if (response) {
+          setCredits(response.credits);
+        }
+      } catch (error) {
+        console.error("Error fetching credits:", error);
+      }
+    };
+
+    fetchCredits();
+  }, [user, isSignedIn]);
 
   return (
     <header className="p-2 sticky top-0 z-50 w-full border-b  flex items-center justify-center ">
@@ -62,8 +82,13 @@ export default function Header() {
               </Button>
             </Link>
 
-            <span className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
-              {/* {credits} Credits Left */}
+            <span
+              className="text-sm font-medium px-3 py-1 bg-blue-100 text-blue-800 rounded-full"
+              onClick={() => {
+                toast.warning("This feature is not available yet");
+              }}
+            >
+              {credits} Credits Left
             </span>
 
             <Button
@@ -98,8 +123,13 @@ export default function Header() {
             </Button>
           </SignedOut>
           <SignedIn>
-            <span className="text-xs font-medium px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-              {/* {credits} Credits */}
+            <span
+              className="text-xs font-medium px-2 py-1 bg-blue-100 text-blue-800 rounded-full"
+              onClick={() => {
+                toast.warning("This feature is not available yet");
+              }}
+            >
+              {credits} Credits
             </span>
 
             <UserButton />

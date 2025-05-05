@@ -24,6 +24,7 @@ import {
 } from "@uploadcare/react-uploader";
 import axios from "axios";
 import { createVideo } from "@/lib/api_calls/video";
+import { useManageCredit } from "@/hooks/manage-credit";
 
 export default function UploadModal({
   isOpen,
@@ -32,6 +33,7 @@ export default function UploadModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { setCredits } = useManageCredit();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedTransformations, setSelectedTransformations] =
@@ -63,9 +65,11 @@ export default function UploadModal({
         avatar: user.imageUrl,
       }
     );
+
     setIsUploading(false);
 
-    if (res) {
+    if (res?.success) {
+      setCredits(res?.result?.credits);
       onClose();
     }
   };

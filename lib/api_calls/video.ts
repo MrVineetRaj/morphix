@@ -23,7 +23,7 @@ export const createVideo = async (
     });
     toast.success("Video created successfully");
     console.log("Video created successfully:", res.data);
-    return true;
+    return { success: true, result: res.data };
   } catch (error) {
     toast.error("Error creating video");
     console.error("Error creating video:", error);
