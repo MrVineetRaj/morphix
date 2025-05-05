@@ -77,7 +77,7 @@ export const startTransformingVideo = async (
 
     let uuid = videoURL.split("/")[videoURL.split("/").length - 2];
 
-    console.log("Deleting file from Uploadcare:", uuid);
+    console.log("Deleting file from Uploadcare:", uuid, cloudinaryURL);
     await deleteFile(
       {
         uuid,
@@ -112,7 +112,7 @@ export const startTransformingVideo = async (
           prompt: transformationApplied,
           video_url: cloudinaryURL,
         },
-        webhookUrl: "https://morphix.unknownbug.tech/api/webhook/fla_ai",
+        webhookUrl: "https://morphix.unknownbug.tech/api/webhook/fal_ai",
       }
     );
 
