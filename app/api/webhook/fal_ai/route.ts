@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       const updatedVideo = await Video.findOneAndUpdate(
         { flaAiRequestId: requestId },
         {
-          transformedVideoURL: payload.videos[0].url,
+          transformedVideoURL: payload.video.url,
           status: VideoStatuses.COMPLETED,
         },
         {
