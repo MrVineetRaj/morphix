@@ -17,7 +17,13 @@ export async function GET(req: NextRequest) {
         }
       );
     }
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json(
+      {
+        message: "Video fetched successfully",
+        video: result,
+      },
+      { status: 200 }
+    );
   } catch (err: any) {
     console.error("Error processing webhook:", err.message || err);
 

@@ -22,7 +22,7 @@ export const createVideo = async (
       author,
     });
     toast.success("Video created successfully");
-    console.log("Video created successfully:", res.data);
+
     return { success: true, result: res.data };
   } catch (error) {
     if (error instanceof AxiosError) {

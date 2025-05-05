@@ -7,7 +7,6 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
 
-    console.log("Received ID:", id);
 
     const result = await getVideoHistory(id as string);
 

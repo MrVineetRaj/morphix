@@ -18,7 +18,7 @@ export default function VideoGallery({ query }: { query?: string }) {
   const [hasMore, setHasMore] = useState(true);
 
   const loadVideos = async (reset = false) => {
-    console.log("Loading videos with query:", reset, query);
+    
     try {
       setLoading(true);
 
@@ -29,7 +29,7 @@ export default function VideoGallery({ query }: { query?: string }) {
         setHasMore(false);
         return;
       }
-      console.log("Videos fetched:", result.videos);
+      
       if (reset) {
         setVideos(result.videos);
       } else {

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 // to handle fal.ai webhook on completing on transformation
 export async function POST(req: Request) {
   const body = await req.json();
-  console.log("Received webhook:", body);
+  
 
   try {
     const { request_id, payload } = body;
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       video.transformedVideoURL = payload?.video?.url;
       video.status = VideoStatuses.COMPLETED;
       await video.save();
-      console.log("Video updated:", video);
+      
 
       userId = video?.createBy;
     }
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       video.error = payload?.detail[0]?.msg;
       video.status = VideoStatuses.FAILED;
       await video.save();
-      console.log("Video updated:", video);
+      
       userId = video.createBy;
       const userCredit = await UserCredit.findOne({
         clerkUserId: userId,

@@ -10,23 +10,26 @@ const VideoPage = ({ videoId }: { videoId: string }) => {
   const [loading, setLoading] = React.useState(false);
   useEffect(() => {
     const fetchVideo = async (id: string) => {
-      console.log("Fetching video with ID:", id);
+      
       setLoading(true);
       try {
+        if (!id) {
+          return null;
+        }
         const res = await axios.get(`/api/video/${id}`);
-        console.log("Fetched video:", res.data);
         if (res.status !== 200) {
           return null;
         }
+        
 
-        console.log("Video data:", res.data);
-        setVideo(res.data);
+        setVideo(res?.data?.video);
       } catch (error) {
         return null;
       } finally {
         setLoading(false);
       }
     };
+
     fetchVideo(videoId);
   }, [videoId]);
   return (

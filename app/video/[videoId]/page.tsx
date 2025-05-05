@@ -9,11 +9,11 @@ const MainVideoPage = () => {
 
   useEffect(() => {
     const videoId = params.videoId;
-    console.log("Video ID from URL:", params);
+    
     if (!videoId) {
       return;
     }
-    console.log("Video ID:", videoId);
+    
     setVideoId((videoId as string) || "");
   }, [params]);
   

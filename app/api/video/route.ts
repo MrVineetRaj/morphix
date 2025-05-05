@@ -17,14 +17,6 @@ export async function POST(req: Request) {
       author,
     } = await req.json();
 
-    console.log("Received data:", {
-      videoURL,
-      transformationApplied,
-      title,
-      description,
-      userId,
-      author,
-    });
     const result = await startTransformingVideo(
       videoURL,
       transformationApplied,
@@ -33,8 +25,6 @@ export async function POST(req: Request) {
       userId,
       author
     );
-
-    console.log("Transformation result:", result);
 
     return NextResponse.json(result, { status: 200 });
   } catch (err: any) {
@@ -55,7 +45,6 @@ export async function GET(req: Request) {
     const query = url.searchParams.get("query");
     const page = url.searchParams.get("page");
 
-    console.log("Received query:", query);
     const result = await getAllVideos(query || "", page ? parseInt(page) : 1);
 
     return NextResponse.json(

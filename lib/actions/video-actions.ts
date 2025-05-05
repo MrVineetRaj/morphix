@@ -78,7 +78,7 @@ export const startTransformingVideo = async (
 
     let uuid = videoURL.split("/")[videoURL.split("/").length - 2];
 
-    console.log("Deleting file from Uploadcare:", uuid, cloudinaryURL);
+    
 
     // Deleting the video from uploadcare
     await deleteFile(
@@ -144,7 +144,7 @@ export const startTransformingVideo = async (
       credits: userCredits.credits,
     };
   } catch (error) {
-    console.log("Error transforming video:", error);
+    
     throw error;
   }
 };
@@ -158,7 +158,7 @@ export const getVideoById = async (videoId: string) => {
     }
     return video;
   } catch (error) {
-    console.log("Error fetching video:", error);
+    
     throw error;
   }
 };
@@ -167,7 +167,7 @@ export const getAllVideos = async (query: string = "", page = 1) => {
   try {
     const limit = 20;
     await connectToDatabase();
-    console.log("Querying videos with query:", query);
+    
 
     // fetching videos with query , pagination and limit
     const videos = await Video.find({
@@ -182,8 +182,7 @@ export const getAllVideos = async (query: string = "", page = 1) => {
       .limit(limit)
       .sort({ createdAt: -1 });
 
-    console.log("Videos found:", videos);
-
+      
     // to address if db has more videos or not
     const videosCnt = await Video.countDocuments({
       videoType: VideoType.PUBLIC,

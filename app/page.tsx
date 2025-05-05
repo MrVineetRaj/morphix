@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     const queryParam = searchParams.get("query");
-    console.log("Query param:", queryParam);
+    
     setQuery(queryParam || "");
   }, [searchParams]); // Update the query state when search params change
 

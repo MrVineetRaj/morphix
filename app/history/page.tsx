@@ -21,7 +21,7 @@ const HistoryPage = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log("Fetched video history:", data);
+        
         setVideos(data);
       } catch (error) {
         console.error("Error fetching video history:", error);

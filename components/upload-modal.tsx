@@ -78,7 +78,6 @@ export default function UploadModal({
 
   // on success of upload  using upload care record the returned video url
   const handleUploadSuccess = (file: OutputFileEntry) => {
-    console.log("File uploaded successfully:", file);
     setVideoURL(file.cdnUrl as string);
   };
 
