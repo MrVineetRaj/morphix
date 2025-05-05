@@ -105,6 +105,10 @@ export const startTransformingVideo = async (
       };
     }
 
+    userCredits.credits = userCredits.credits - 1;
+    await userCredits.save();
+
+
     const { request_id } = await fal.queue.submit(
       "fal-ai/hunyuan-video/video-to-video",
       {
@@ -131,6 +135,7 @@ export const startTransformingVideo = async (
       message: "Video transformation started",
       videoId: video._id,
       success: true,
+      credits: userCredits.credits,
     };
   } catch (error) {
     console.error("Error transforming video:", error);

@@ -4,6 +4,7 @@ import { Schema, Document, models, model } from "mongoose";
 export interface IUserCredit extends Document {
   clerkUserId: string; // Optional field
   credits: number; // Optional field
+  bufferCredits: number; // Optional field
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +21,10 @@ const UserCreditSchema: Schema = new Schema(
     credits: {
       type: Number,
       default: 1,
+    },
+    bufferCredits: {
+      type: Number,
+      default: 0,
     },
   },
   {
