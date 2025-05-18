@@ -24,7 +24,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useManageCredit } from "@/hooks/manage-credit";
-import { getCredits } from "@/lib/api_calls/credits";
+import { getCredits } from "@/public/api_calls/credits";
 import { toast } from "sonner";
 
 export default function Header() {

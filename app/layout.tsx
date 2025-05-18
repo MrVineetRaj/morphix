@@ -10,7 +10,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Morphix - Video Transformation Platform",
   description: "Upload, transform, and display videos with ease",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({

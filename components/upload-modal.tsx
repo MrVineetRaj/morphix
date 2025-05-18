@@ -23,7 +23,7 @@ import {
   OutputFileEntry,
 } from "@uploadcare/react-uploader";
 import axios from "axios";
-import { createVideo } from "@/lib/api_calls/video";
+import { createVideo } from "@/public/api_calls/video";
 import { useManageCredit } from "@/hooks/manage-credit";
 
 export default function UploadModal({
@@ -53,7 +53,7 @@ export default function UploadModal({
       router.push("/sign-in");
       return;
     }
-    
+
     // if signed in then call create video
     const res = await createVideo(
       videoURL,
@@ -75,12 +75,10 @@ export default function UploadModal({
     }
   };
 
-
   // on success of upload  using upload care record the returned video url
   const handleUploadSuccess = (file: OutputFileEntry) => {
     setVideoURL(file.cdnUrl as string);
   };
-
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { IVideo } from "@/lib/models/video.model";
-import { getAllVideos } from "@/lib/api_calls/video";
+import { getAllVideos } from "@/public/api_calls/video";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -18,7 +18,6 @@ export default function VideoGallery({ query }: { query?: string }) {
   const [hasMore, setHasMore] = useState(true);
 
   const loadVideos = async (reset = false) => {
-    
     try {
       setLoading(true);
 
@@ -29,7 +28,7 @@ export default function VideoGallery({ query }: { query?: string }) {
         setHasMore(false);
         return;
       }
-      
+
       if (reset) {
         setVideos(result.videos);
       } else {
